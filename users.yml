@@ -1,0 +1,23 @@
+- hosts: all
+  tasks:
+
+  - name: add user
+    tags: always
+    user:
+      name: rack
+      groups: root
+
+  - name: add ssh for user
+    tags: always
+    authorized_key:
+      user: rack
+      key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJt/pDEREcQ5VhoHkd9xaWXibcyV/xgFRnYdXuKqHxWK axel ansible"
+
+  - name: add sudoers file for rack
+    tags: always
+    copy:
+      src: sudoer_rack
+      dest: /etc/sudoers.d/rack
+      owner: root
+      group: root
+      mode: 0400

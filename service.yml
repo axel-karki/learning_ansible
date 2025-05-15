@@ -1,0 +1,11 @@
+- hosts: all
+  become: true
+  tasks:
+
+  - name: start apache service
+    tags: apache_service
+    service:
+      name: apache2
+      state: started
+      enabled: yes # Start when server starts
+    when: ansible_distribution == "Debian"

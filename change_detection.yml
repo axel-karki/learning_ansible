@@ -1,0 +1,17 @@
+- hosts: all
+  become: true
+  tasks:
+
+    - name: line changer
+      lineinfile:
+        path: /var/www/html/index.html
+        regexp: '^<h1>'
+        line: <h2> This line was changed.</h2>
+      when: ansible_distribution == "Debian"
+      register: apache2
+
+    - name: start service when change detected
+      service:
+        name: apache2
+        state: started
+      when: apache2.changed
