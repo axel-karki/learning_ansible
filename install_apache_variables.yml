@@ -1,0 +1,13 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: this will the install apache and php package and update packages for different variables
+    package:
+      update_cache: yes
+      name: 
+        - "{{ apache_var }}"
+        - "{{ php_var }}"
+      state: latest
