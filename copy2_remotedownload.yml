@@ -1,0 +1,35 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: update packages of the server
+    tags: always
+    apt:
+      update_cache: yes
+    when: ansible_distribution == "Debian"
+
+  - name: this will the install apache2 package
+    tags: toapache, tophp
+    apt:
+      name: apache2
+      state: latest
+    when: ansible_distribution == "Debian"
+   
+  - name: add php support for apache
+    tags: tophp
+    apt:
+      name: libapache2-mod-php
+      state: latest
+    when: ansible_distribution == "Debian"
+
+  - name: install terraform
+    tags: always
+    unarchive:
+      src: https://releases.hashicorp.com/terraform/1.12.0/terraform_1.12.0_linux_arm.zip
+      dest: /usr/local/bin
+      remote_src: yes
+      mode: 0755
+      owner: root
+      group: root
