@@ -1,0 +1,34 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: update packages of the server
+    tags: always
+    apt:
+      update_cache: yes
+    when: ansible_distribution == "Debian"
+
+  - name: this will the install apache2 package
+    tags: toapache, tophp
+    apt:
+      name: apache2
+      state: latest
+    when: ansible_distribution == "Debian"
+   
+  - name: add php support for apache
+    tags: tophp
+    apt:
+      name: libapache2-mod-php
+      state: latest
+    when: ansible_distribution == "Debian"
+
+  - name: copy the html file for site
+    tags: always
+    copy:
+      src: for_copying.html
+      dest: /var/www/html/index.html
+      owner: root
+      group: root
+      mode: 0644
